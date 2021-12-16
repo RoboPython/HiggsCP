@@ -218,7 +218,6 @@ class A1A1Event(object):
             va_tau2_nu_long_B = va_alpha2_B * pb_tau2_h.z 
             va_tau2_nu_long_C = va_alpha2_C * pb_tau2_h.z
 
-		
             va_tau1_nu_E_A = approx_E_nu(pb_tau1_h, va_tau1_nu_long_A)
             va_tau1_nu_E_B = approx_E_nu(pb_tau1_h, va_tau1_nu_long_B)
             va_tau1_nu_E_C = approx_E_nu(pb_tau1_h, va_tau1_nu_long_C)
@@ -267,17 +266,17 @@ class A1A1Event(object):
             self.cols_suppl = np.concatenate(self.cols_suppl, 1)
 
 
-	if args.BETA > 0:
-		vn_tau1_nu_phi = smear_polynomial(v_tau1_nu_phi, args.BETA, args.pol_b, args.pol_c)
-		vn_tau2_nu_phi = smear_polynomial(v_tau2_nu_phi, args.BETA, args.pol_b, args.pol_c)
+        if args.BETA > 0:
+            vn_tau1_nu_phi = smear_polynomial(v_tau1_nu_phi, args.BETA, args.pol_b, args.pol_c)
+            vn_tau2_nu_phi = smear_polynomial(v_tau2_nu_phi, args.BETA, args.pol_b, args.pol_c)
 
-		tau1_sin_phi = np.sin(vn_tau1_nu_phi)
-		tau1_cos_phi = np.cos(vn_tau1_nu_phi)
-		tau2_sin_phi = np.sin(vn_tau2_nu_phi)
-		tau2_cos_phi = np.cos(vn_tau2_nu_phi)
+            tau1_sin_phi = np.sin(vn_tau1_nu_phi)
+            tau1_cos_phi = np.cos(vn_tau1_nu_phi)
+            tau2_sin_phi = np.sin(vn_tau2_nu_phi)
+            tau2_cos_phi = np.cos(vn_tau2_nu_phi)
 
-	self.valid_cols = [va_tau1_nu_trans * tau1_sin_phi, va_tau2_nu_trans * tau2_sin_phi,
-                           va_tau1_nu_trans * tau1_cos_phi, va_tau2_nu_trans * tau2_cos_phi]
+            self.valid_cols = [va_tau1_nu_trans * tau1_sin_phi, va_tau2_nu_trans * tau2_sin_phi,
+                               va_tau1_nu_trans * tau1_cos_phi, va_tau2_nu_trans * tau2_cos_phi]
 
 
         if args.FEAT == "Variant-1.0":

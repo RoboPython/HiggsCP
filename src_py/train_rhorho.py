@@ -14,8 +14,8 @@ from tf_model import total_train, NeuralNetwork
 def run(args):
     num_classes = args.NUM_CLASSES
 
-    print("Downloading data")
-    download_data(args)
+    #print("Downloading data")
+    #download_data(args)
     
     print("Preprocessing data")
     data, weights, argmaxs, perm, c012s, hits_argmaxs, hits_c012s = preprocess_data(args)
@@ -77,10 +77,13 @@ def run(args):
 
 
 def start(args):
-    tf.reset_default_graph()
-    sess = tf.Session()
+    #tf.reset_default_graph()
+    tf.compat.v1.reset_default_graph()
+    #sess = tf.Session()
+    sess =tf.compat.v1.Session()
     np.random.seed(781)
-    tf.set_random_seed(781)
+    #tf.set_random_seed(781)
+    tf.random.set_seed(781)
     with sess.as_default():
         run(args)
 

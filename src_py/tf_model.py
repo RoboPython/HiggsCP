@@ -3,7 +3,7 @@ import tensorflow as tf
 from sklearn.metrics import roc_auc_score, accuracy_score
 import sys
 
-from src_py.metrics_utils import calculate_deltas_unsigned, calculate_deltas_signed
+from metrics_utils import calculate_deltas_unsigned, calculate_deltas_signed
 
 # Issue with regr_c012s, not learning well after modifications of last weeks, last
 # good production on June 20-th"
@@ -67,7 +67,7 @@ def total_train(pathOUT, model, data, args, emodel=None, batch_size=128, epochs=
     # max_perf = evaluate2(emodel, data.valid, filtered=True)
     # print max_perf
 
-    print "model = ", model.tloss
+    print("model = ", model.tloss)
 
     for i in range(epochs):
         sys.stdout.write("\nEPOCH: %d \n" % (i + 1))
@@ -94,9 +94,9 @@ def total_train(pathOUT, model, data, args, emodel=None, batch_size=128, epochs=
             msg_str_0 = "TRAINING:     loss: %.3f \n" % (train_loss)
             msg_str_1 = "TRAINING:     acc: %.3f mean: %.3f L1_delta_w: %.3f  L2_delta_w: %.3f \n" % (train_acc, train_mean, train_l1_delta_w, train_l2_delta_w)
             msg_str_2 = "VALIDATION:   acc: %.3f mean  %.3f L1_delta_w: %.3f, L2_delta_w: %.3f \n" % (valid_acc, valid_mean, valid_l1_delta_w, valid_l2_delta_w)
-            print msg_str_0
-            print msg_str_1
-            print msg_str_2
+            print(msg_str_0)
+            print(msg_str_1)
+            print(msg_str_2)
             tf.logging.info(msg_str_0)
             tf.logging.info(msg_str_1)
             tf.logging.info(msg_str_2)
@@ -112,7 +112,7 @@ def total_train(pathOUT, model, data, args, emodel=None, batch_size=128, epochs=
             if valid_loss == np.min(valid_losses):
                 test_acc, test_mean, test_l1_delta_w, test_l2_delta_w = evaluate(emodel, data.test, args, filtered=True)
                 msg_str_3 = "TESTING:      acc: %.3f mean  %.3f L1_delta_w: %.3f, L2_delta_w: %.3f \n" % (test_acc, test_mean, test_l1_delta_w, test_l2_delta_w)
-                print msg_str_3
+                print(msg_str_3)
                 tf.logging.info(msg_str_3)
                 
                 test_accs += [test_acc]
@@ -217,84 +217,84 @@ def total_train(pathOUT, model, data, args, emodel=None, batch_size=128, epochs=
 
         # storing history of training            
         np.save(pathOUT+'train_losses.npy', train_losses)
-        print "train_losses", train_losses
+        print("train_losses", train_losses)
         np.save(pathOUT+'valid_losses.npy', valid_losses)
-        print "valid_losses", valid_losses
+        print("valid_losses", valid_losses)
         np.save(pathOUT+'test_losses.npy',  test_losses)
-        print "tets_losses", test_losses
+        print("tets_losses", test_losses)
 
         np.save(pathOUT+'train_accs.npy', train_accs )
-        print "train_accs", train_accs
+        print("train_accs", train_accs)
         np.save(pathOUT+'valid_accs.npy', valid_accs )
-        print "valid_accs", valid_accs
+        print("valid_accs", valid_accs)
         np.save(pathOUT+'test_accs.npy', test_accs )
-        print "test_accs", test_accs
+        print("test_accs", test_accs)
 
         np.save(pathOUT+'train_L1_deltas.npy', train_L1_deltas )
-        print "train_L1_deltas", train_L1_deltas
+        print("train_L1_deltas", train_L1_deltas)
         np.save(pathOUT+'valid_L1_deltas.npy', valid_L1_deltas )
-        print "valid_L1_deltas", valid_L1_deltas
+        print("valid_L1_deltas", valid_L1_deltas)
         np.save(pathOUT+'test_L1_deltas.npy', test_L1_deltas )
-        print "test_L1_deltas", test_L1_deltas
+        print("test_L1_deltas", test_L1_deltas)
 
         np.save(pathOUT+'train_L2_deltas.npy', train_L2_deltas )
-        print "train_L2_deltas", train_L2_deltas
+        print("train_L2_deltas", train_L2_deltas)
         np.save(pathOUT+'valid_L2_deltas.npy', valid_L2_deltas )
-        print "valid_L2_deltas", valid_L2_deltas
+        print("valid_L2_deltas", valid_L2_deltas)
         np.save(pathOUT+'test_L2_deltas.npy', test_L2_deltas )
-        print "test_L2_deltas", test_L2_deltas
+        print("test_L2_deltas", test_L2_deltas)
 
                   
     if model.tloss == 'soft_c012s':
 
         # storing history of training            
         np.save(pathOUT+'train_losses_soft_c012s.npy', train_losses)
-        print "train_losses_soft_c012s", train_losses
+        print("train_losses_soft_c012s", train_losses)
         np.save(pathOUT+'valid_losses_soft_c012s.npy', valid_losses)
-        print "valid_losses_soft_c012s", valid_losses
+        print("valid_losses_soft_c012s", valid_losses)
         np.save(pathOUT+'test_losses_soft_c012s.npy',  test_losses)
-        print "tets_losses_soft_c012s", test_losses
+        print("tets_losses_soft_c012s", test_losses)
                 
     if model.tloss == 'regr_argmaxs':
 
         # storing history of training            
         np.save(pathOUT+'train_losses_regr_argmaxs.npy', train_losses)
-        print "train_losses_regr_argmaxs", train_losses
+        print("train_losses_regr_argmaxs", train_losses)
         np.save(pathOUT+'valid_losses_regr_argmax.npy', valid_losses)
-        print "valid_losses_regr_argmax", valid_losses
+        print("valid_losses_regr_argmax", valid_losses)
         np.save(pathOUT+'test_losses_regr_argmax.npy',  test_losses)
-        print "test_losses_regr_argmax", test_losses
+        print("test_losses_regr_argmax", test_losses)
                 
     if model.tloss == 'soft_argmaxs':
 
         # storing history of training            
         np.save(pathOUT+'train_losses_soft_argmaxs.npy', train_losses)
-        print "train_losses_soft_argmaxs", train_losses
+        print("train_losses_soft_argmaxs", train_losses)
         np.save(pathOUT+'valid_losses_soft_argmaxs.npy', valid_losses)
-        print "valid_losses_soft_argmaxs", valid_losses
+        print("valid_losses_soft_argmaxs", valid_losses)
         np.save(pathOUT+'test_losses_soft_argmaxs.npy',  test_losses)
-        print "test_losses_soft_argmaxs", test_losses
+        print("test_losses_soft_argmaxs", test_losses)
 
                  
     if model.tloss == 'regr_c012s':
 
         # storing history of training            
         np.save(pathOUT+'train_losses_regr_c012s.npy', train_losses)
-        print "train_losses_regr_c012s", train_losses
+        print("train_losses_regr_c012s", train_losses)
         np.save(pathOUT+'valid_losses_regr_c012ss.npy', valid_losses)
-        print "valid_losses_regr_c012s", valid_losses
+        print("valid_losses_regr_c012s", valid_losses)
         np.save(pathOUT+'test_losses_regr_c012s.npy',  test_losses)
-        print "test_losses_regr_c012s", test_losses
+        print("test_losses_regr_c012s", test_losses)
                  
     if model.tloss == 'regr_weights':
 
         # storing history of training            
         np.save(pathOUT+'train_losses_weights.npy', train_losses)
-        print "train_losses_weights", train_losses
+        print("train_losses_weights", train_losses)
         np.save(pathOUT+'valid_losses_weights.npy', valid_losses)
-        print "valid_losses_weights", valid_losses
+        print("valid_losses_weights", valid_losses)
         np.save(pathOUT+'test_losses_weights.npy',  test_losses)
-        print "test_losses_weights", test_losses
+        print("test_losses_weights", test_losses)
    
     return train_accs, valid_accs, test_accs
 

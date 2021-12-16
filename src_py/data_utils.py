@@ -93,7 +93,7 @@ class UnweightedDataset(object):
 
 
 def read_np(filename):
-    with open(filename) as f:
+    with open(filename,encoding=None) as f:
         return np.load(f)
 
 

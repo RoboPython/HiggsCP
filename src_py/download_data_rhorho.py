@@ -1,5 +1,5 @@
 import os
-import urllib
+import urllib.request
 
 import numpy as np
 
@@ -44,4 +44,4 @@ def download_data_files(args):
                   'If you want to force download use --force_download option')
         else:
             print('Donwloading ' + file)
-            urllib.urlretrieve(DATA_URL + file, file_path)
+            urllib.request.retrieve(DATA_URL + file, file_path)
