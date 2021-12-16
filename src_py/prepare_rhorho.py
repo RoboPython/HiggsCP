@@ -5,7 +5,7 @@ import os
 
 
 def read_raw_all(kind, args):
-    print "Reading %s" % kind
+    print("Reading %s" % kind)
 
     data_path = args.IN
 
@@ -13,7 +13,7 @@ def read_raw_all(kind, args):
     all_weights = []
     for letter in ["a"][:args.DATASETS]:
         name = os.path.join(data_path, "pythia.H.rhorho.1M.%s.%s.outTUPLE_labFrame" % (letter, kind))
-        print letter, name
+        print(letter, name)
         data, weights = read_raw_root(name, num_particles=7)
         all_data += [data]
         all_weights += [weights]
@@ -38,9 +38,9 @@ if __name__ == "__main__":
     data_14, weights_14 = read_raw_all("CPmix_14", args)
     data_16, weights_16 = read_raw_all("CPmix_16", args)
     data_18, weights_18 = read_raw_all("CPmix_18", args)
-    data_20, weights_20 = read_raw_all("CPmix_20", args)
+    #data_20, weights_20 = read_raw_all("CPmix_20", args)
 
-    print "In total: prepared %d events." % len(weights_00)
+    print("In total: prepared %d events." % len(weights_00))
     np.testing.assert_array_almost_equal(data_00, data_02)
     np.testing.assert_array_almost_equal(data_00, data_04)
     np.testing.assert_array_almost_equal(data_00, data_06)
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     np.testing.assert_array_almost_equal(data_00, data_14)
     np.testing.assert_array_almost_equal(data_00, data_16)
     np.testing.assert_array_almost_equal(data_00, data_18)
-    np.testing.assert_array_almost_equal(data_00, data_20)
+    #np.testing.assert_array_almost_equal(data_00, data_20)
 
     np.random.seed(123)
     perm = np.random.permutation(len(weights_00))
@@ -68,5 +68,5 @@ if __name__ == "__main__":
     np.save(os.path.join(data_path, "rhorho_raw.w_14.npy"), weights_14)
     np.save(os.path.join(data_path, "rhorho_raw.w_16.npy"), weights_16)
     np.save(os.path.join(data_path, "rhorho_raw.w_18.npy"), weights_18)
-    np.save(os.path.join(data_path, "rhorho_raw.w_20.npy"), weights_20)
+    #np.save(os.path.join(data_path, "rhorho_raw.w_20.npy"), weights_20)
     np.save(os.path.join(data_path, "rhorho_raw.perm.npy"), perm)

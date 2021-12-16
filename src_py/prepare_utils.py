@@ -19,8 +19,8 @@ def read_raw_root(name, num_particles):
     ids = [int(idx) for idx, line in enumerate(lines) if line.startswith("TUPLE")]
 
     # Ensure that there are `num_particles` particles for each example.
-    assert ids == range(0, num_particles * len(ids), num_particles)
-    print len(lines), len(ids)*num_particles
+    assert ids == list(range(0, num_particles * len(ids), num_particles))
+    print(len(lines), len(ids)*num_particles)
     # If the numbers are not equal, check the last lines of pythia file 
     assert len(lines) == num_particles * len(ids)
     lines = [line.strip() for line in lines]
@@ -30,8 +30,7 @@ def read_raw_root(name, num_particles):
     weights = [float(lines[num_particles * i].strip().split()[1]) for i in range(num_examples)]
     weights = np.array(weights)
 
-    values = [map(float, " ".join(lines[num_particles * i + 1: num_particles * (i + 1)]).split())
-              for i in range(num_examples)]
+    values = [list(map(float, " ".join(lines[num_particles * i + 1: num_particles * (i + 1)]).split())) for i in range(num_examples)]
     values = np.array(values)
 
     return values, weights

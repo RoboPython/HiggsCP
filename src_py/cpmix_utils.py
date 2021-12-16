@@ -61,12 +61,12 @@ def preprocess_data(args):
     num_classes = args.NUM_CLASSES
     reuse_weights = args.REUSE_WEIGHTS  # Set this flag to true if you want reuse calculated weights
 
-    print "Loading data"
+    print("Loading data")
     suffix = (args.TYPE).split("_")[-1] #-1 to indeks ostatniego elementu 
     data = read_np(os.path.join(data_path, suffix + "_raw.data.npy"))
     w = read_np(os.path.join(data_path, suffix + "_raw.w.npy")).swapaxes(0, 1)
     perm = read_np(os.path.join(data_path, suffix + "_raw.perm.npy"))
-    print "Read %d events" % data.shape[0]
+    print("Read %d events" % data.shape[0])
 
     data_len = data.shape[0]
 
