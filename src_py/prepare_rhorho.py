@@ -70,3 +70,4 @@ if __name__ == "__main__":
     np.save(os.path.join(data_path, "rhorho_raw.w_18.npy"), weights_18)
     #np.save(os.path.join(data_path, "rhorho_raw.w_20.npy"), weights_20)
     np.save(os.path.join(data_path, "rhorho_raw.perm.npy"), perm)
+

@@ -91,10 +91,15 @@ class UnweightedDataset(object):
                 self.hits_argmaxs[self.mask][cur_id:cur_id+batch_size], self.hits_c012s[self.mask][cur_id:cur_id+batch_size],
                 self.filt[self.mask][cur_id:cur_id+batch_size])
 
-
+'''
 def read_np(filename):
     with open(filename,encoding=None) as f:
         return np.load(f)
+'''
+
+def read_np(filename):
+    return np.load(filename)
+
 
 
 class EventDatasets(object):
