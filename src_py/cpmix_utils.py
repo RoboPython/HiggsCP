@@ -64,9 +64,9 @@ def preprocess_data(args):
     print("Loading data")
     suffix = (args.TYPE).split("_")[-1] #-1 to indeks ostatniego elementu 
     data = read_np(os.path.join(data_path, suffix + "_raw.data.npy"))
-    w = read_np(os.path.join(data_path, suffix + "_raw.w_04.npy")) #RUBYQ - I swapped from .w. to .w_00. is this allowed?. Seems that W is only 1d should be 2d. 
+    w = read_np(os.path.join(data_path, suffix + "_raw.w_00.npy")) #RUBYQ - I swapped from .w. to .w_00. is this allowed?. Seems that W is only 1d should be 2d. 
     print(w)
-    w = w.swapaxes(0,1)
+    w = np.swapaxes([w],0,1)
     perm = read_np(os.path.join(data_path, suffix + "_raw.perm.npy"))
     print("Read %d events" % data.shape[0])
 

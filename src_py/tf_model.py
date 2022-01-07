@@ -4,17 +4,18 @@ from sklearn.metrics import roc_auc_score, accuracy_score
 import sys
 
 from metrics_utils import calculate_deltas_unsigned, calculate_deltas_signed
+tf.compat.v1.disable_eager_execution()
 
 # Issue with regr_c012s, not learning well after modifications of last weeks, last
 # good production on June 20-th"
 
 def train(model, dataset, batch_size=128):
-    sess = tf.get_default_session()
+    sess = tf.compat.v1.compat.v1.get_default_session()
     epoch_size = dataset.n / batch_size
     losses = []
 
     sys.stdout.write("<losses>):")
-    for i in range(epoch_size):
+    for i in range(int(epoch_size)):
         x, weights, argmaxs, c012s, hits_argmaxs, hits_c012s, filt,  = dataset.next_batch(batch_size)
         loss, _ = sess.run([model.loss, model.train_op],
                            {model.x: x, model.weights: weights, model.argmaxs: argmaxs, model.c012s: c012s,
@@ -30,8 +31,8 @@ def train(model, dataset, batch_size=128):
 def get_loss(model, dataset, batch_size=128):
     batches = dataset.n / batch_size
     losses = []
-    sess = tf.get_default_session()
-    for i in range(batches):
+    sess = tf.compat.v1.get_default_session()
+    for i in range(int(batches)):
         x, weights, argmaxs, c012s, hits_argmaxs, hits_c012s, filt, = dataset.next_batch(batch_size)
         loss = sess.run([model.loss],
                            {model.x: x, model.weights: weights, model.argmaxs: argmaxs, model.c012s: c012s,
@@ -44,7 +45,7 @@ def get_loss(model, dataset, batch_size=128):
 # tf_model knows nothing about classes <-->angle relations
 # operates on arrays which has dimention of num_classes
 def total_train(pathOUT, model, data, args, emodel=None, batch_size=128, epochs=25):
-    sess = tf.get_default_session()
+    sess = tf.compat.v1.compat.v1.get_default_session()
     if emodel is None:
         emodel = model
     train_accs   = []
@@ -97,9 +98,9 @@ def total_train(pathOUT, model, data, args, emodel=None, batch_size=128, epochs=
             print(msg_str_0)
             print(msg_str_1)
             print(msg_str_2)
-            tf.logging.info(msg_str_0)
-            tf.logging.info(msg_str_1)
-            tf.logging.info(msg_str_2)
+            tf.compat.v1.logging.info(msg_str_0)
+            tf.compat.v1.logging.info(msg_str_1)
+            tf.compat.v1.logging.info(msg_str_2)
             
             train_accs   += [train_acc]
             valid_accs   += [valid_acc]
@@ -113,7 +114,7 @@ def total_train(pathOUT, model, data, args, emodel=None, batch_size=128, epochs=
                 test_acc, test_mean, test_l1_delta_w, test_l2_delta_w = evaluate(emodel, data.test, args, filtered=True)
                 msg_str_3 = "TESTING:      acc: %.3f mean  %.3f L1_delta_w: %.3f, L2_delta_w: %.3f \n" % (test_acc, test_mean, test_l1_delta_w, test_l2_delta_w)
                 print(msg_str_3)
-                tf.logging.info(msg_str_3)
+                tf.compat.v1.logging.info(msg_str_3)
                 
                 test_accs += [test_acc]
                 test_L1_deltas += [test_l1_delta_w]
@@ -301,7 +302,7 @@ def total_train(pathOUT, model, data, args, emodel=None, batch_size=128, epochs=
 
 
 def predictions(model, dataset, at_most=None, filtered=True):
-    sess = tf.get_default_session()
+    sess = tf.compat.v1.get_default_session()
     x = dataset.x[dataset.mask]
     weights = dataset.weights[dataset.mask]
     filt = dataset.filt[dataset.mask]
@@ -337,7 +338,7 @@ def predictions(model, dataset, at_most=None, filtered=True):
     return x, p, weights, argmaxs, c012s, hits_argmaxs, hits_c012s
 
 def softmax_predictions(model, dataset, at_most=None, filtered=True):
-    sess = tf.get_default_session()
+    sess = tf.compat.v1.get_default_session()
     x = dataset.x[dataset.mask]
     weights = dataset.weights[dataset.mask]
     filt = dataset.filt[dataset.mask]
@@ -378,7 +379,7 @@ def calculate_classification_metrics(pred_w, calc_w, args):
     return np.array([acc, mean, l1_delta_w, l2_delta_w])
 
 def regr_weights_predictions(model, dataset, at_most=None, filtered=True):
-    sess = tf.get_default_session()
+    sess = tf.compat.v1.get_default_session()
     x = dataset.x[dataset.mask]
     calc_weights = dataset.weights[dataset.mask]
     filt = dataset.filt[dataset.mask]
@@ -397,7 +398,7 @@ def regr_weights_predictions(model, dataset, at_most=None, filtered=True):
 
 #prepared by Michal
 def regr_c012s_predictions(model, dataset, at_most=None, filtered=True):
-    sess = tf.get_default_session()
+    sess = tf.compat.v1.get_default_session()
     x = dataset.x[dataset.mask]
     calc_c012s = dataset.c012s[dataset.mask]
     filt = dataset.filt[dataset.mask]
@@ -415,7 +416,7 @@ def regr_c012s_predictions(model, dataset, at_most=None, filtered=True):
     return calc_c012s, pred_c012s
 
 def soft_c012s_predictions(model, dataset, at_most=None, filtered=True):
-    sess = tf.get_default_session()
+    sess = tf.compat.v1.get_default_session()
     x = dataset.x[dataset.mask]
     calc_hits_c012s = dataset.hits_c012s[dataset.mask]
     filt = dataset.filt[dataset.mask]
@@ -433,7 +434,7 @@ def soft_c012s_predictions(model, dataset, at_most=None, filtered=True):
     return calc_hits_c012s, pred_hits_c012s
 
 def regr_argmaxs_predictions(model, dataset, at_most=None, filtered=True):
-    sess = tf.get_default_session()
+    sess = tf.compat.v1.get_default_session()
     x = dataset.x[dataset.mask]
     calc_argmaxs = dataset.argmaxs[dataset.mask]
     filt = dataset.filt[dataset.mask]
@@ -451,7 +452,7 @@ def regr_argmaxs_predictions(model, dataset, at_most=None, filtered=True):
     return calc_argmaxs, pred_argmaxs
 
 def soft_argmaxs_predictions(model, dataset, at_most=None, filtered=True):
-    sess = tf.get_default_session()
+    sess = tf.compat.v1.get_default_session()
     x = dataset.x[dataset.mask]
     calc_hits_argmaxs = dataset.hits_argmaxs[dataset.mask]
     filt = dataset.filt[dataset.mask]
@@ -540,17 +541,17 @@ def evaluate_preds(preds, wa, wb):
 
 
 def linear(x, name, size, bias=True):
-    w = tf.get_variable(name + "/W", [x.get_shape()[1], size])
-    b = tf.get_variable(name + "/b", [1, size],
+    w = tf.compat.v1.get_variable(name + "/W", [x.get_shape()[1], size])
+    b = tf.compat.v1.get_variable(name + "/b", [1, size],
                         initializer=tf.zeros_initializer())
     return tf.matmul(x, w)  # + b vanishes in batch normalization
 
 
 def batch_norm(x, name):
     mean, var = tf.nn.moments(x, [0])
-    normalized_x = (x - mean) * tf.rsqrt(var + 1e-8)
-    gamma = tf.get_variable(name + "/gamma", [x.get_shape()[-1]], initializer=tf.constant_initializer(1.0))
-    beta = tf.get_variable(name + "/beta", [x.get_shape()[-1]])
+    normalized_x = (x - mean) * tf.math.rsqrt(var + 1e-8)
+    gamma = tf.compat.v1.get_variable(name + "/gamma", [x.get_shape()[-1]], initializer=tf.constant_initializer(1.0))
+    beta = tf.compat.v1.get_variable(name + "/beta", [x.get_shape()[-1]])
     return gamma * normalized_x + beta
 
 
@@ -559,12 +560,12 @@ class NeuralNetwork(object):
     def __init__(self, num_features, num_classes, num_layers=1, size=100, lr=1e-3, keep_prob=1.0,
                  tloss="soft", activation='linear', input_noise=0.0, optimizer="AdamOptimizer"):
         batch_size = None
-        self.x = x = tf.placeholder(tf.float32, [batch_size, num_features])
-        self.weights = weights = tf.placeholder(tf.float32, [batch_size, num_classes])
-        self.argmaxs = argmaxs = tf.placeholder(tf.float32, [batch_size, 1])
-        self.c012s = c012s = tf.placeholder(tf.float32, [batch_size, 3])
-        self.hits_argmaxs = hits_argmaxs = tf.placeholder(tf.float32, [batch_size, num_classes])
-        self.hits_c012s = hits_c012s = tf.placeholder(tf.float32, [batch_size, num_classes])
+        self.x = x = tf.compat.v1.placeholder(tf.float32, [batch_size, num_features])
+        self.weights = weights = tf.compat.v1.placeholder(tf.float32, [batch_size, num_classes])
+        self.argmaxs = argmaxs = tf.compat.v1.placeholder(tf.float32, [batch_size, 1])
+        self.c012s = c012s = tf.compat.v1.placeholder(tf.float32, [batch_size, 3])
+        self.hits_argmaxs = hits_argmaxs = tf.compat.v1.placeholder(tf.float32, [batch_size, num_classes])
+        self.hits_c012s = hits_c012s = tf.compat.v1.placeholder(tf.float32, [batch_size, num_classes])
         self.tloss = tloss
 
         if input_noise > 0.0:
@@ -622,10 +623,14 @@ class NeuralNetwork(object):
         else:
             raise ValueError("tloss unrecognized: %s" % tloss)
 
-        optimizer = {"GradientDescentOptimizer": tf.train.GradientDescentOptimizer, 
-        "AdadeltaOptimizer": tf.train.AdadeltaOptimizer, "AdagradOptimizer": tf.train.AdagradOptimizer,
-        "ProximalAdagradOptimizer": tf.train.ProximalAdagradOptimizer, "AdamOptimizer": tf.train.AdamOptimizer,
-        "FtrlOptimizer": tf.train.FtrlOptimizer, "RMSPropOptimizer": tf.train.RMSPropOptimizer,
-        "ProximalGradientDescentOptimizer": tf.train.ProximalGradientDescentOptimizer}[optimizer]
+
+        optimizer = {"GradientDescentOptimizer": tf.optimizers.SGD, 
+                     "AdadeltaOptimizer": tf.optimizers.Adadelta,
+                     "AdagradOptimizer": tf.optimizers.Adagrad,
+                     "AdamOptimizer": tf.compat.v1.train.AdamOptimizer,
+                     "FtrlOptimizer": tf.optimizers.Ftrl,
+                     "RMSPropOptimizer": tf.optimizers.RMSprop}[optimizer]
+
+        print(type(optimizer))
         self.train_op = optimizer(lr).minimize(loss)
 

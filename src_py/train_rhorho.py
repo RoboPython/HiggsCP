@@ -58,19 +58,19 @@ def run(args):
         monit_plots(pathOUT_plots, args, event, w_a, w_b)
 
     print("Initializing model")
-    with tf.variable_scope("model1") as vs:
+    with tf.compat.v1.variable_scope("model1") as vs:
         model = NeuralNetwork(num_features, num_classes,
                               num_layers=args.LAYERS, size=args.SIZE,
                               keep_prob=(1-args.DROPOUT), optimizer=args.OPT,
                               tloss=args.TRAINING_METHOD)
 
-    with tf.variable_scope("model1", reuse=True) as vs:
+    with tf.compat.v1.variable_scope("model1", reuse=True) as vs:
         emodel = NeuralNetwork(num_features, num_classes,
                                num_layers=args.LAYERS, size=args.SIZE,
                                keep_prob=(1-args.DROPOUT), optimizer=args.OPT,
                                tloss=args.TRAINING_METHOD)
 
-    tf.global_variables_initializer().run()
+    tf.compat.v1.global_variables_initializer().run()
 
     print("Training")
     total_train(pathOUT_npy, model, points, args, emodel=emodel, batch_size=128, epochs=args.EPOCHS)
